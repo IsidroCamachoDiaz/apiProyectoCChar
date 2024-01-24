@@ -48,7 +48,7 @@ namespace apiProyectoCChar.Controllers
 
             return usuario;
         }
-        // GET: api/Usuarios/correo
+        // GET: api/Usuario/correo
         [HttpGet("correo/{correo}")]
         public async Task<ActionResult<Usuario>> GetUsuarioByCorreo(string correo)
         {
