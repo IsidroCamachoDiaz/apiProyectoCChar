@@ -51,20 +51,20 @@ namespace apiProyectoCChar.Controllers
 
         // GET: api/Token/token/token
         [HttpGet("token/{token}")]
-        public async Task<ActionResult<Token>> GetTokenByToken(string tokenString)
+        public async Task<ActionResult<Token>> GetTokenByToken(string token)
         {
             if (_context.Tokens == null)
             {
                 return NotFound();
             }
-            var token = await _context.Tokens.FirstOrDefaultAsync(u => u.Token1 == tokenString);
+            var tokenO = await _context.Tokens.FirstOrDefaultAsync(u => u.Token1 == token);
 
-            if (token == null)
+            if (tokenO == null)
             {
                 return NotFound();
             }
 
-            return token;
+            return tokenO;
         }
 
         // PUT: api/Token/5
