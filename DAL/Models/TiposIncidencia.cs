@@ -11,7 +11,7 @@ public partial class TiposIncidencia
 
     public DateTime? FechaExpiracion { get; set; }
 
-    public double PrecioTipo { get; set; }
+    public float PrecioTipo { get; set; }
 
     public virtual ICollection<Trabajo> Trabajos { get; set; } = new List<Trabajo>();
 }

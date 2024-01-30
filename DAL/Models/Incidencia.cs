@@ -7,7 +7,7 @@ public partial class Incidencia
 {
     public int IdIncidencia { get; set; }
 
-    public double? CosteIncidencia { get; set; }
+    public float? CosteIncidencia { get; set; }
 
     public string? DescripcionTecnica { get; set; }
 

@@ -56,6 +56,8 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.ToTable("incidencias", "datos_puros");
 
+            entity.HasIndex(e => e.IdSolicitud, "uk_kfklp89d4p9rjoe481hy97ohn").IsUnique();
+
             entity.Property(e => e.IdIncidencia).HasColumnName("id_incidencia");
             entity.Property(e => e.CosteIncidencia).HasColumnName("coste_incidencia");
             entity.Property(e => e.DescripcionTecnica)
@@ -66,22 +68,22 @@ public partial class ProyectoTerceraContext : DbContext
                 .HasColumnName("descripcion_usuario");
             entity.Property(e => e.EstadoIncidencia).HasColumnName("estado_incidencia");
             entity.Property(e => e.FechaFin)
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp(6) without time zone")
                 .HasColumnName("fecha_fin");
             entity.Property(e => e.FechaInicio)
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp(6) without time zone")
                 .HasColumnName("fecha_inicio");
             entity.Property(e => e.HorasIncidencia).HasColumnName("horas_incidencia");
             entity.Property(e => e.IdSolicitud).HasColumnName("id_solicitud");
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
 
-            entity.HasOne(d => d.IdSolicitudNavigation).WithMany(p => p.Incidencia)
-                .HasForeignKey(d => d.IdSolicitud)
-                .HasConstraintName("fk_incidencias_id_solicitud");
+            entity.HasOne(d => d.IdSolicitudNavigation).WithOne(p => p.Incidencia)
+                .HasForeignKey<Incidencia>(d => d.IdSolicitud)
+                .HasConstraintName("fkqf7foy3yo5prj3qu6w08sw00w");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Incidencia)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("fk_incidencias_id_usuario");
+                .HasConstraintName("fki03mjcwbaij4ybwn8nw8t820k");
         });
 
         modelBuilder.Entity<Solicitude>(entity =>
@@ -96,13 +98,13 @@ public partial class ProyectoTerceraContext : DbContext
                 .HasColumnName("descripcion_solicitud");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.FechaLimite)
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp(6) without time zone")
                 .HasColumnName("fecha_limite");
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Solicitudes)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("fk_solicitudes_id_usuario");
+                .HasConstraintName("fk80y8yk97k9fc2o45sc9n5f7ok");
         });
 
         modelBuilder.Entity<TiposIncidencia>(entity =>
@@ -116,7 +118,7 @@ public partial class ProyectoTerceraContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("descripcion_tipo");
             entity.Property(e => e.FechaExpiracion)
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp(6) without time zone")
                 .HasColumnName("fecha_expiracion");
             entity.Property(e => e.PrecioTipo).HasColumnName("precio_tipo");
         });
@@ -129,7 +131,7 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.Property(e => e.IdToken).HasColumnName("id_token");
             entity.Property(e => e.FechaLimite)
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp(6) without time zone")
                 .HasColumnName("fecha_limite");
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
             entity.Property(e => e.Token1)
@@ -138,7 +140,7 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Tokens)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("fk_tokens_id_usuario");
+                .HasConstraintName("fkg6l1d8wdjrbn75r7rltyiqifh");
         });
 
         modelBuilder.Entity<Trabajo>(entity =>
@@ -158,11 +160,11 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.HasOne(d => d.IdIncidenciaNavigation).WithMany(p => p.Trabajos)
                 .HasForeignKey(d => d.IdIncidencia)
-                .HasConstraintName("fk_trabajos_id_incidencia");
+                .HasConstraintName("fkdmmx9m9ti9aqrfs1yp5ip7v3w");
 
             entity.HasOne(d => d.IdTipoIncidenciaNavigation).WithMany(p => p.Trabajos)
                 .HasForeignKey(d => d.IdTipoIncidencia)
-                .HasConstraintName("fk_trabajos_id_tipo_incidencia");
+                .HasConstraintName("fki8mym9fc6j8u80hde9ee2ola8");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
@@ -172,6 +174,7 @@ public partial class ProyectoTerceraContext : DbContext
             entity.ToTable("usuarios", "personal_datos");
 
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+            entity.Property(e => e.Alta).HasColumnName("alta");
             entity.Property(e => e.ContraseniaUsuario)
                 .HasMaxLength(255)
                 .HasColumnName("contrasenia_usuario");
@@ -189,7 +192,7 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.HasOne(d => d.IdAccesoNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.IdAcceso)
-                .HasConstraintName("fk_usuarios_id_acceso");
+                .HasConstraintName("fk23olhy66uj44w5qgqhk6u3jo5");
         });
 
         OnModelCreatingPartial(modelBuilder);

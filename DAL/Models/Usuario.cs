@@ -19,6 +19,8 @@ public partial class Usuario
 
     public int? IdAcceso { get; set; }
 
+    public bool Alta { get; set; }
+
     public virtual Acceso? IdAccesoNavigation { get; set; }
 
     public virtual ICollection<Incidencia> Incidencia { get; set; } = new List<Incidencia>();
