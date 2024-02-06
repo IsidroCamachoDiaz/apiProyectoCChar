@@ -21,6 +21,8 @@ public partial class Usuario
 
     public bool Alta { get; set; }
 
+    public DateTime? FechaBaja { get; set; }
+
     public virtual Acceso? IdAccesoNavigation { get; set; }
 
     public virtual ICollection<Incidencia> Incidencia { get; set; } = new List<Incidencia>();

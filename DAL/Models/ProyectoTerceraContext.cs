@@ -181,6 +181,9 @@ public partial class ProyectoTerceraContext : DbContext
             entity.Property(e => e.CorreoUsuario)
                 .HasMaxLength(255)
                 .HasColumnName("correo_usuario");
+            entity.Property(e => e.FechaBaja)
+                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnName("fecha_baja");
             entity.Property(e => e.FotoUsuario).HasColumnName("foto_usuario");
             entity.Property(e => e.IdAcceso).HasColumnName("id_acceso");
             entity.Property(e => e.NombreUsuario)
