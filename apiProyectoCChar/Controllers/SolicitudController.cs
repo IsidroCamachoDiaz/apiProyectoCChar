@@ -115,6 +115,7 @@ namespace apiProyectoCChar.Controllers
             return NoContent();
         }
 
+
         private bool SolicitudeExists(int id)
         {
             return (_context.Solicitudes?.Any(e => e.IdSolicitud == id)).GetValueOrDefault();

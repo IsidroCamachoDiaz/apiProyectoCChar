@@ -33,8 +33,15 @@ public partial class ProyectoTerceraContext : DbContext
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Database=proyectoTercera;Username=postgres;Password=Flash12311");
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Solicitude>()
+       .HasOne(s => s.Incidencia)
+       .WithOne(i => i.IdSolicitudNavigation)
+       .HasForeignKey<Incidencia>(i => i.IdSolicitud)
+       .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<Acceso>(entity =>
         {
             entity.HasKey(e => e.IdAcceso).HasName("accesos_pkey");
