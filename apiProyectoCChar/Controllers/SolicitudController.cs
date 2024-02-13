@@ -28,7 +28,7 @@ namespace apiProyectoCChar.Controllers
           {
               return NotFound();
           }
-            return await _context.Solicitudes.ToListAsync();
+            return await _context.Solicitudes.Include(x=>x.IdUsuarioNavigation).Include(x=>x.Incidencia).ToListAsync();
         }
 
         // GET: api/Solicitud/5

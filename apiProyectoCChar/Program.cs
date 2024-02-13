@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,6 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    //Ignorar la referencia circular a json
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    //Ordenar JSON
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 
 builder.Services.AddDbContext<ProyectoTerceraContext>(
 o => o.UseNpgsql(builder.Configuration.GetConnectionString("CadenaConexionPostgreSQL")));
