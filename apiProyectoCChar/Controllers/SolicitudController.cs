@@ -28,7 +28,7 @@ namespace apiProyectoCChar.Controllers
           {
               return NotFound();
           }
-            return await _context.Solicitudes.Include(x=>x.IdUsuarioNavigation).ToListAsync();
+            return await _context.Solicitudes.Include(x=>x.IdUsuarioNavigation).Include(x => x.Incidencia).ToListAsync();
         }
 
         // GET: api/Solicitud/5
@@ -39,7 +39,7 @@ namespace apiProyectoCChar.Controllers
           {
               return NotFound();
           }
-            var solicitude = await _context.Solicitudes.FindAsync(id);
+            var solicitude = await _context.Solicitudes.Include(x => x.IdUsuarioNavigation).Include(x => x.Incidencia).FirstOrDefaultAsync(x => x.IdSolicitud == id);
 
             if (solicitude == null)
             {
