@@ -28,7 +28,7 @@ namespace apiProyectoCChar.Controllers
           {
               return NotFound();
           }
-            return await _context.Solicitudes.Include(x=>x.IdUsuarioNavigation).Include(x=>x.Incidencia).ToListAsync();
+            return await _context.Solicitudes.Include(x=>x.IdUsuarioNavigation).ToListAsync();
         }
 
         // GET: api/Solicitud/5
@@ -89,7 +89,7 @@ namespace apiProyectoCChar.Controllers
           {
               return Problem("Entity set 'ProyectoTerceraContext.Solicitudes'  is null.");
           }
-            _context.Solicitudes.Add(solicitude);
+            _context.Solicitudes.Update(solicitude);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSolicitude", new { id = solicitude.IdSolicitud }, solicitude);
