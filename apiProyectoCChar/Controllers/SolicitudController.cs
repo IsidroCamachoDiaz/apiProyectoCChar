@@ -63,6 +63,7 @@ namespace apiProyectoCChar.Controllers
 
             try
             {
+                _context.Incidencias.Update(solicitude.Incidencia);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
