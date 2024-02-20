@@ -39,7 +39,7 @@ namespace apiProyectoCChar.Controllers
           {
               return NotFound();
           }
-            var incidencia = await _context.Incidencias.FindAsync(id);
+            var incidencia = await _context.Incidencias.Include(x => x.IdUsuarioNavigation).Include(x => x.IdSolicitudNavigation).FirstOrDefaultAsync(x => x.IdIncidencia == id);
 
             if (incidencia == null)
             {
@@ -58,11 +58,13 @@ namespace apiProyectoCChar.Controllers
             {
                 return BadRequest();
             }
+            incidencia.IdUsuario = incidencia.IdUsuarioNavigation.IdUsuario;
 
             _context.Entry(incidencia).State = EntityState.Modified;
 
             try
             {
+                _context.Solicitudes.Update(incidencia.IdSolicitudNavigation);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
