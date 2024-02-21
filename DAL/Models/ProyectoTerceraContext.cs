@@ -33,15 +33,8 @@ public partial class ProyectoTerceraContext : DbContext
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Database=proyectoTercera;Username=postgres;Password=Flash12311");
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Solicitude>()
-       .HasOne(s => s.Incidencia)
-       .WithOne(i => i.IdSolicitudNavigation)
-       .HasForeignKey<Incidencia>(i => i.IdSolicitud)
-       .OnDelete(DeleteBehavior.Cascade);
-
         modelBuilder.Entity<Acceso>(entity =>
         {
             entity.HasKey(e => e.IdAcceso).HasName("accesos_pkey");
@@ -63,8 +56,6 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.ToTable("incidencias", "datos_puros");
 
-            entity.HasIndex(e => e.IdSolicitud, "uk_kfklp89d4p9rjoe481hy97ohn").IsUnique();
-
             entity.Property(e => e.IdIncidencia).HasColumnName("id_incidencia");
             entity.Property(e => e.CosteIncidencia).HasColumnName("coste_incidencia");
             entity.Property(e => e.DescripcionTecnica)
@@ -75,22 +66,22 @@ public partial class ProyectoTerceraContext : DbContext
                 .HasColumnName("descripcion_usuario");
             entity.Property(e => e.EstadoIncidencia).HasColumnName("estado_incidencia");
             entity.Property(e => e.FechaFin)
-                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("fecha_fin");
             entity.Property(e => e.FechaInicio)
-                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("fecha_inicio");
             entity.Property(e => e.HorasIncidencia).HasColumnName("horas_incidencia");
             entity.Property(e => e.IdSolicitud).HasColumnName("id_solicitud");
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
 
-            entity.HasOne(d => d.IdSolicitudNavigation).WithOne(p => p.Incidencia)
-                .HasForeignKey<Incidencia>(d => d.IdSolicitud)
-                .HasConstraintName("fkqf7foy3yo5prj3qu6w08sw00w");
+            entity.HasOne(d => d.IdSolicitudNavigation).WithMany(p => p.Incidencia)
+                .HasForeignKey(d => d.IdSolicitud)
+                .HasConstraintName("fk_incidencias_id_solicitud");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Incidencia)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("fki03mjcwbaij4ybwn8nw8t820k");
+                .HasConstraintName("fk_incidencias_id_usuario");
         });
 
         modelBuilder.Entity<Solicitude>(entity =>
@@ -105,13 +96,13 @@ public partial class ProyectoTerceraContext : DbContext
                 .HasColumnName("descripcion_solicitud");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.FechaLimite)
-                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("fecha_limite");
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Solicitudes)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("fk80y8yk97k9fc2o45sc9n5f7ok");
+                .HasConstraintName("fk_solicitudes_id_usuario");
         });
 
         modelBuilder.Entity<TiposIncidencia>(entity =>
@@ -125,7 +116,7 @@ public partial class ProyectoTerceraContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("descripcion_tipo");
             entity.Property(e => e.FechaExpiracion)
-                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("fecha_expiracion");
             entity.Property(e => e.PrecioTipo).HasColumnName("precio_tipo");
         });
@@ -138,7 +129,7 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.Property(e => e.IdToken).HasColumnName("id_token");
             entity.Property(e => e.FechaLimite)
-                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnType("timestamp without time zone")
                 .HasColumnName("fecha_limite");
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
             entity.Property(e => e.Token1)
@@ -147,7 +138,7 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Tokens)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("fkg6l1d8wdjrbn75r7rltyiqifh");
+                .HasConstraintName("fk_tokens_id_usuario");
         });
 
         modelBuilder.Entity<Trabajo>(entity =>
@@ -171,7 +162,7 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.HasOne(d => d.IdTipoIncidenciaNavigation).WithMany(p => p.Trabajos)
                 .HasForeignKey(d => d.IdTipoIncidencia)
-                .HasConstraintName("fki8mym9fc6j8u80hde9ee2ola8");
+                .HasConstraintName("fk_trabajos_id_tipo_incidencia");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
@@ -202,7 +193,7 @@ public partial class ProyectoTerceraContext : DbContext
 
             entity.HasOne(d => d.IdAccesoNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.IdAcceso)
-                .HasConstraintName("fk23olhy66uj44w5qgqhk6u3jo5");
+                .HasConstraintName("fk_usuarios_id_acceso");
         });
 
         OnModelCreatingPartial(modelBuilder);

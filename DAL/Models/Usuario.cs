@@ -19,7 +19,7 @@ public partial class Usuario
 
     public int? IdAcceso { get; set; }
 
-    public bool Alta { get; set; }
+    public bool? Alta { get; set; }
 
     public DateTime? FechaBaja { get; set; }
 

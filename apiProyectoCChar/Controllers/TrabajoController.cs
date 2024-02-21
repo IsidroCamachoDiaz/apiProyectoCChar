@@ -28,7 +28,7 @@ namespace apiProyectoCChar.Controllers
           {
               return NotFound();
           }
-            return await _context.Trabajos.ToListAsync();
+            return await _context.Trabajos.Include(x=>x.IdIncidenciaNavigation).Include(x=>x.IdTipoIncidenciaNavigation).ToListAsync();
         }
 
         // GET: api/Trabajo/5
@@ -89,7 +89,8 @@ namespace apiProyectoCChar.Controllers
           {
               return Problem("Entity set 'ProyectoTerceraContext.Trabajos'  is null.");
           }
-            _context.Trabajos.Add(trabajo);
+            
+            _context.Trabajos.Update(trabajo);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTrabajo", new { id = trabajo.IdTrabajo }, trabajo);

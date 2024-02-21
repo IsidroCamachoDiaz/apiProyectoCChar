@@ -17,5 +17,5 @@ public partial class Solicitude
 
     public virtual Usuario? IdUsuarioNavigation { get; set; }
 
-    public virtual Incidencia? Incidencia { get; set; }
+    public virtual ICollection<Incidencia> Incidencia { get; set; } = new List<Incidencia>();
 }
