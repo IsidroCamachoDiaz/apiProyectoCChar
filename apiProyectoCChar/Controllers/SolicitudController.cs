@@ -90,6 +90,8 @@ namespace apiProyectoCChar.Controllers
               return Problem("Entity set 'ProyectoTerceraContext.Solicitudes'  is null.");
           }
             _context.Solicitudes.Update(solicitude);
+            Incidencia inc = new Incidencia(solicitude.DescripcionSolicitud, solicitude.Estado, solicitude);
+            _context.Incidencias.Update(inc);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSolicitude", new { id = solicitude.IdSolicitud }, solicitude);

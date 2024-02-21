@@ -28,7 +28,7 @@ namespace apiProyectoCChar.Controllers
           {
               return NotFound();
           }
-            return await _context.Incidencias.Include(x=>x.IdUsuarioNavigation).ToListAsync();
+            return await _context.Incidencias.Include(x=>x.IdUsuarioNavigation).Include(x=>x.IdSolicitudNavigation).ToListAsync();
         }
 
         // GET: api/Incidencia/5
@@ -58,7 +58,11 @@ namespace apiProyectoCChar.Controllers
             {
                 return BadRequest();
             }
-            incidencia.IdUsuario = incidencia.IdUsuarioNavigation.IdUsuario;
+            if(incidencia.IdUsuarioNavigation!= null)
+            {
+                incidencia.IdUsuario = incidencia.IdUsuarioNavigation.IdUsuario;
+            }
+            incidencia.IdSolicitud = incidencia.IdSolicitudNavigation.IdSolicitud;
 
             _context.Entry(incidencia).State = EntityState.Modified;
 
