@@ -39,7 +39,7 @@ namespace apiProyectoCChar.Controllers
           {
               return NotFound();
           }
-            var trabajo = await _context.Trabajos.FindAsync(id);
+            var trabajo = await _context.Trabajos.Include(x=>x.IdIncidenciaNavigation).Include(x=>x.IdTipoIncidenciaNavigation).FirstOrDefaultAsync(x => x.IdTrabajo == id); ;
 
             if (trabajo == null)
             {
@@ -58,6 +58,8 @@ namespace apiProyectoCChar.Controllers
             {
                 return BadRequest();
             }
+            trabajo.IdTipoIncidencia = trabajo.IdTipoIncidenciaNavigation.IdTipo;
+            trabajo.IdIncidencia = trabajo.IdIncidenciaNavigation.IdIncidencia;
 
             _context.Entry(trabajo).State = EntityState.Modified;
 
